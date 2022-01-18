@@ -1,15 +1,22 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from "vue";
+import VueRouter from "vue-router";
 // import Home from '../views/Home.vue'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path:'/index',
-    name:'index',
-    component:()=>import(/* webpackChunkName: "index" */ '../views/index.vue')
-  }
+    path: "/index",
+    name: "index",
+    component: () =>
+      import(/* webpackChunkName: "index" */ "../views/index.vue"),
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: () =>
+      import(/* webpackChunkName: "index" */ "../views/Login.vue"),
+  },
   // {
   //   path: '/',
   //   name: 'Home',
@@ -23,10 +30,22 @@ const routes = [
   //   // which is lazy-loaded when the route is visited.
   //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   // }
-]
+];
 
+// router.beforeEach((to, from, next) => {
+//   let token = localStorage.getItem("token"); //获取token
+//   if (to.path === ) {
+//     if (to.path == "/login") {
+//       next();
+//     } else {
+//       next("/login");
+//     }
+//   } else {
+//     next();
+//   }
+// });
 const router = new VueRouter({
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

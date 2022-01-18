@@ -10,18 +10,25 @@
         <li>我的鸡腿:--</li>
         <li>获取鸡腿</li>
         <li>叩丁狼官网</li>
-        <li class="tabbar_loginbtn">登录</li>
+        <li class="tabbar_loginbtn" @click="login">登录</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    login() {
+      this.$router.push("/login");
+    },
+  },
+};
 </script>
 
 <style lang='less' scoped>
 .tabbar_wrapper {
+  // width: 100%;
   background-color: #242b39;
   .tabbar_container {
     width: 1200px;
@@ -37,7 +44,11 @@ export default {};
       align-items: center;
       li {
         margin-right: 20px;
+        &:last-child {
+          margin-right: 0;
+        }
       }
+
       .tabbar_custom {
         display: flex;
         align-items: center;
