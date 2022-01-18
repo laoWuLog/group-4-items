@@ -1,28 +1,31 @@
 <template>
   <div id="app">
-    <router-view/>
+    <Tabbar>头部</Tabbar>
+    <Header>导航栏</Header>
+    <Banner></Banner>
+    <!-- 中间内容 -->
+    <div>
+      <router-view/>
+    </div>
+    <!-- 底部 -->
+    <Footer></Footer>
   </div>
 </template>
 
-<style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<script>
+import Tabbar from './components/Tabbar.vue'
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
+import Banner from '@/components/Banner.vue'
+export default {
+  components:{
+    Tabbar,
+    Header,
+    Footer,
+    Banner
   }
 }
+</script>
+<style lang="less" scoped>
+
 </style>
