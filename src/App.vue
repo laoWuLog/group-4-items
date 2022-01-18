@@ -16,7 +16,7 @@
 import Header from "./components/Header.vue";
 import Tabbar from "./components/Tabbar.vue";
 import Foorter from "./components/Foorter.vue";
-import Loin from './components/Login.vue'
+import Login from './components/Login.vue'
 
 export default {
   components: {
