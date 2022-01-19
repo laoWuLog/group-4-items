@@ -17,10 +17,11 @@
 </template>
 
 <script>
+import bus from "./bus";
 export default {
   methods: {
     login() {
-      this.$router.push("/login");
+      bus.$emit("login", true);
     },
   },
 };

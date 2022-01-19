@@ -13,6 +13,7 @@
     </div>
     <!-- 尾部 -->
     <Footer></Footer>
+    <Login></Login>
   </div>
 </template>
 <script>
@@ -21,6 +22,7 @@ import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 import Banner from "@/components/Banner.vue";
 import Recommend from "./components/Recommend.vue";
+import Login from "./components/Login.vue";
 
 export default {
   components: {
@@ -29,6 +31,7 @@ export default {
     Footer,
     Banner,
     Recommend,
+    Login,
   },
 };
 </script>
