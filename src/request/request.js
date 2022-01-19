@@ -1,8 +1,6 @@
 //封装axios实例的拦截（请求，响应）
 import axios from "axios";
-import {
-    config
-} from "vue/types/umd";
+
 
 // 1.创建axios实例
 const instance = axios.create({
@@ -17,7 +15,7 @@ instance.interceptors.request.use((config) => {
 })
 //重写实例响应后拦截器
 instance.interceptors.response.use((data) => {
-    return data;
+    return data.data;
 }, (err) => {
     return Promise.reject(err);
 })
