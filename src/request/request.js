@@ -15,8 +15,8 @@ instance.interceptors.request.use((config)=>{
 });
 
 // 重写实例响应后拦截器
-instance.interceptors.request.use((data)=>{
-  return data;
+instance.interceptors.response.use((result)=>{
+  return result.data;
 },(err)=>{
   return Promise.reject(err)
 });

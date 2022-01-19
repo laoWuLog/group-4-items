@@ -10,15 +10,21 @@
         <li>我的鸡腿:--</li>
         <li>获取鸡腿</li>
         <li>叩丁狼官网</li>
-        <li class="tabbar_loginbtn">登录</li>
+        <li class="tabbar_loginbtn" @click="loginFn">登录</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
+import bus from './bus'
 export default {
-
+  methods: {
+    loginFn(){
+      // 通过bus传值
+      bus.$emit("loginvisible",true)
+    }
+  },
 }
 </script>
 

@@ -1,4 +1,5 @@
 import request from './request';
+import qs from 'qs'
 
 // 获取精品推荐
 // 第一种方法
@@ -7,10 +8,16 @@ import request from './request';
 } */
 
 
-export const getProductRec = () => request.get('cms/products/recommend')
+export const getProductRec = () => request.get('/cms/products/recommend')
 
-// 用户信息
-export const getUserProfiles = () => request.get('/shop/userProfiles',{headers:{'x-auth-token':'xxxx'}})
+// 用户信息    
+export const getUserProfiles = () => request.get('/cms/shop/userProfiles',{headers:{'x-auth-token':localStorage.setItem['token']}})
 
 // 查看购物车
-export const getShopCarts = () => request.get('/shop/carts',{headers:{'x-auth-token':'xxxx'}})
+export const getShopCarts = () => request.get('/cms/shop/carts',{headers:{'x-auth-token':'xxxx'}})
+
+// 获取手机验证码
+export const sendSMS=(data)=>request.post('/cms/sendSMS',qs.stringify(data))
+
+// 手机验证码登录
+export const phoneRegin=(data)=>request.post('/cms/phoneRegin',qs.stringify(data))
