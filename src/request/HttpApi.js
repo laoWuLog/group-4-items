@@ -1,4 +1,4 @@
-import axios from 'axios';
+import request from './request';
 
 // 获取精品推荐
 // 第一种方法
@@ -7,4 +7,10 @@ import axios from 'axios';
 } */
 
 
-export const getProductRec = () => axios.get('cms/products/recommend')
+export const getProductRec = () => request.get('cms/products/recommend')
+
+// 用户信息
+export const getUserProfiles = () => request.get('/shop/userProfiles',{headers:{'x-auth-token':'xxxx'}})
+
+// 查看购物车
+export const getShopCarts = () => request.get('/shop/carts',{headers:{'x-auth-token':'xxxx'}})
