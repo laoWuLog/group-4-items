@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // 1. 创建axios实例
-const instance = axios.crante({
+const instance = axios.create({
   timeout: 1500, // 超时时间15s
   baseURL: "", // ip + 端口 ， 公用的路径
 });
