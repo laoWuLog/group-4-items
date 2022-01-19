@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // 1. 创建axios实例
-const instance = axios.crante({
+const instance = axios.create({
   timeout: 1500, // 超时时间15s
   baseURL: "", // ip + 端口 ， 公用的路径
 });
@@ -15,8 +15,8 @@ instance.interceptors.request.use((config)=>{
 });
 
 // 重写实例响应后拦截器
-instance.interceptors.request.use((data)=>{
-  return data;
+instance.interceptors.response.use((result)=>{
+  return result.data;
 },(err)=>{
   return Promise.reject(err)
 });
