@@ -21,7 +21,7 @@ import bus from "./bus";
 export default {
   methods: {
     login() {
-      bus.$emit("login", true);
+      bus.$emit("loginvisible", true);
     },
   },
 };

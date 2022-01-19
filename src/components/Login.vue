@@ -16,7 +16,19 @@
               v-model="phoneNum"
             />
           </div>
-          <div class="slide-verify-slider"></div>
+          <div class="slide-verify-slider">
+            <slide-verify
+              :l="42"
+              :r="10"
+              :w="360"
+              :h="155"
+              class="slide_box"
+              slider-text="向右滑动"
+              @success="onSuccess"
+              @fail="onFail"
+              @refresh="onRefresh"
+            ></slide-verify>
+          </div>
           <div class="yanzheng">
             <input type="text" placeholder="请输入短信验证码" />
             <div class="btn">获取验证码</div>
@@ -33,31 +45,39 @@ import bus from "./bus";
 export default {
   data() {
     return {
-      visible: false,
-      phoneNum: "",
+      visible: false, // 控制弹框的显示隐藏
+      phoneNum: "", // 手机号码
     };
   },
+  // beforeCreate() {},
   created() {
-    bus.$on("login", (visible) => {
+    bus.$on("loginvisible", (visible) => {
       this.visible = visible;
     });
   },
   methods: {
-    loginFn() {
-      let reg =
-        /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
-      if (!reg.test(this.phoneNum)) {
-        alert("手机格式不正确");
-      }
-    },
+    onSuccess() {},
+    onFail() {},
+    onRefresh() {},
     close() {
       this.visible = false;
+    },
+    // 点击登录按钮
+    loginFn() {
+      // 验证手机号码
+      // let reg = /^1[3-9]\d{9}$/;  // 方式二
+      const reg =
+        /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
+      if (!reg.test(this.phoneNum)) {
+        alert("手机号码格式不正确");
+        return;
+      }
     },
   },
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .modal {
   position: fixed;
   left: 0;
@@ -116,9 +136,9 @@ export default {
         height: 40px;
         line-height: 40px;
         margin-top: 15px;
-        background: #f7f9fa;
-        color: #45494c;
-        border: 1px solid #e4e7eb;
+        // background: #f7f9fa;
+        // color: #45494c;
+        // border: 1px solid #e4e7eb;
         margin: 20px auto 20px;
       }
       .yanzheng {
@@ -151,6 +171,28 @@ export default {
         text-align: center;
         cursor: pointer;
       }
+    }
+  }
+}
+/deep/ .slide_box {
+  width: 100%;
+  position: relative;
+  canvas {
+    position: absolute;
+    top: -145px;
+    left: 0;
+    display: none;
+  }
+  .slide-verify-refresh-icon {
+    display: none;
+    top: -140px;
+  }
+  &:hover {
+    canvas {
+      display: block;
+    }
+    .slide-verify-refresh-icon {
+      display: block;
     }
   }
 }
