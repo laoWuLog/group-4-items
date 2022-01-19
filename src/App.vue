@@ -9,6 +9,7 @@
     </div>
     <!-- 底部 -->
     <Footer />
+    <Login />
   </div>
 </template>
 <script>
