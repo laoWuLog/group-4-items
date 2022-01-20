@@ -5,6 +5,7 @@
     <Header></Header>
     <Banner></Banner>
     <div>
+      <button @click="showToast">按钮按钮</button>
       <!-- <router-view /> -->
     </div>
     <!-- 中间内容 -->
@@ -13,7 +14,10 @@
     </div>
     <!-- 尾部 -->
     <Footer></Footer>
+    <!-- 登录界面 -->
     <Login></Login>
+    <!-- 弹出消息框 -->
+    <!-- <Toast></Toast> -->
   </div>
 </template>
 <script>
@@ -32,6 +36,16 @@ export default {
     Banner,
     Recommend,
     Login,
+  },
+  methods: {
+    // 调用消息弹框方法
+    showToast() {
+      this.$toast({
+        message: "这是一条消息",
+        type: "error",
+        duration: 1000,
+      });
+    },
   },
 };
 </script>

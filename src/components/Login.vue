@@ -50,12 +50,13 @@
 
 <script>
 import bus from "./bus";
+import toast from "../components/Toast/index";
 import { getSMS, getPhoneRegin, getUserProfiles } from "../request/httpAPI";
 export default {
   data() {
     return {
       visible: false, // 控制弹框的显示隐藏
-      phoneNum: "15018159937", // 手机号码
+      phoneNum: "", // 手机号码
       sliderMag: "向右滑动",
       sliderSuc: true, //滑块状态
       phoneCode: "", //手机验证码
@@ -107,10 +108,20 @@ export default {
       const reg =
         /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
       if (!reg.test(this.phoneNum)) {
-        alert("手机号码格式不正确");
+        // alert("手机号码格式不正确");
+        this.$toast({
+          message: "手机号码格式不正确",
+          type: "error",
+          duration: 3000,
+        });
         return false;
       } else if (!this.sliderSuc) {
         alert("请重新验证滑块");
+        this.$toast({
+          message: "请重新验证滑块",
+          type: "error",
+          duration: 3000,
+        });
         return false;
       }
       return true;
