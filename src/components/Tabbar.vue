@@ -4,13 +4,23 @@
       <p>欢迎来到叩丁狼严选</p>
       <ul class="tabbar_nav">
         <li class="tabbar_custom">
-          <img src="../assets/img/userImg.f8bbec5e.png" alt="" />
-          <span>用户名:--</span>
+          <!-- 用的打包工具是webpack,会以组件的形式打包,这里的路径需要用到require -->
+          <!-- 第三方用到的头像如果是微信的,可能会有限制,图片显示"图片暂无法查看" -->
+          <img
+            :src="
+              userInfo
+                ? userInfo.headImg
+                : require('../assets/img/userImg.f8bbec5e.png')
+            "
+            alt=""
+          />
+          <span>用户名:{{ userInfo ? userInfo.nickName : "--" }}</span>
         </li>
-        <li>我的鸡腿:--</li>
+        <li>我的鸡腿:{{ userInfo ? userInfo.coin : "--" }}</li>
         <li>获取鸡腿</li>
         <li>叩丁狼官网</li>
-        <li class="tabbar_loginbtn" @click="login">登录</li>
+        <li v-if="userInfo" class="tabbar_loginbtn">购物车  {{ cartTotal }}</li>
+        <li class="tabbar_loginbtn" @click="login" v-else>登录</li>
       </ul>
     </div>
   </div>
@@ -18,11 +28,32 @@
 
 <script>
 import bus from "./bus";
+import { mapState } from "vuex";
 export default {
   methods: {
     login() {
       bus.$emit("loginvisible", true);
     },
+  },
+  created() {
+    // console.log(mapState(["userInfo"]));
+  },
+  computed: {
+    userInfo() {
+      console.log(this.$store.state.userInfo);
+      return this.$store.state.userInfo?.userInfo;
+    },
+    cartTotal() {
+      return this.$store.state.userInfo?.cartTotal;
+    },
+    // nickName() {
+    //   return this.$store.state.userInfo?.userInfo.nickName;
+    //   // return userInfo?.userInfo.nickName;
+    // },
+    // coin() {
+    //   return this.$store.state.userInfo?.userInfo.coin;
+    // },
+    // ...mapState(["userInfo"]),
   },
 };
 </script>

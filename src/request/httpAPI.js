@@ -12,9 +12,10 @@ export const getShopCarts = () =>
 
 // 用户信息
 export const getUserProfiles = () => {
-  return request.get("/cms/shop/userProfiles", {
-    headers: { "x-auth-token": localStorage.getItem("token") },
-  });
+  // return request.get("/cms/shop/userProfiles", {
+  //   headers: { "x-auth-token": localStorage.getItem("token") },
+  // });
+  return request.get("/cms/shop/userProfiles"); //经过axios拦截器,这里不需要写headers
 };
 
 // 验证码

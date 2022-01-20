@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 // import Home from '../views/Home.vue'
+import store from "../store";
+import { getUserProfiles } from "../request/httpAPI";
 
 Vue.use(VueRouter);
 
@@ -26,20 +28,26 @@ const routes = [
   // }
 ];
 
-// router.beforeEach((to, from, next) => {
-//   let token = localStorage.getItem("token"); //获取token
-//   if (to.path === ) {
-//     if (to.path == "/login") {
-//       next();
-//     } else {
-//       next("/login");
-//     }
-//   } else {
-//     next();
-//   }
-// });
+//const没有声明提升,需要放到上面
 const router = new VueRouter({
   routes,
+});
+
+// 设置前置路由守卫   判断是否有token
+router.beforeEach((to, from, next) => {
+  let token = localStorage.getItem("token"); //获取token
+  let userInfo = store.state.userInfo;
+  if (token && !userInfo) {
+    // getUserProfiles().then((res) => {
+    //   if (res.code === 0) {
+    //     store.commit("updateUserInfo", res.data);
+    //   }
+    // });
+    store.dispatch("getUserInfo");
+    next();
+  } else {
+    next();
+  }
 });
 
 export default router;

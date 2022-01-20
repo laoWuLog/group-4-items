@@ -63,6 +63,14 @@ export default {
       count: 3, //倒计时
     };
   },
+  computed: {
+    nickName() {
+      return this.$store.state.userInfo?.userInfo.nickName;
+    },
+    coin() {
+      return this.$store.state.userInfo?.userInfo.coin;
+    },
+  },
   // beforeCreate() {},
   created() {
     bus.$on("loginvisible", (visible) => {
@@ -126,7 +134,7 @@ export default {
       this.visible = false;
       this.phoneNum = "";
       this.phoneCode = "";
-      this.$refs.slider.reset(); // 类似于id,获取元素
+      this.$refs.slider.reset(); // ref 类似于id,获取元素
     },
     // 点击登录按钮
     loginFn() {
@@ -141,7 +149,11 @@ export default {
             localStorage.setItem("token", res["x-auth-token"]);
             // 发送获取用户信息请求
             getUserProfiles().then((res) => {
-              console.log(res);
+              // console.log(res);
+              if (res.code === 0) {
+                this.$store.commit("updateUserInfo", res.data);
+                this.close(); //关闭窗口
+              }
             });
           }
         });
