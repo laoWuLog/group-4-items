@@ -8,17 +8,13 @@ import qs from 'qs'
 export const getProductRec = () => request.get('/cms/products/recommend')
 
 // 获取用户信息
-export const getuserProfiles = () => request.get('/cms/shop/userProfiles', {
-    headers: {
-        'x-auth-token': localStorage.getItem('token')
-    }
-})
+export const getuserProfiles = () => request.get('/cms/shop/userProfiles')
+//    {  headers: {
+//         'x-auth-token': localStorage.getItem('token')
+//     }
+// }请求头参数
 // 查看购物车
-export const getShopCarts = () => request.get('/cms/shop/carts', {
-    headers: {
-        'x-auth-token': 'xxx'
-    }
-})
+export const getShopCarts = () => request.get('/cms/shop/carts', 1)
 //获取手机验证码
 export const sendSMS = (data) => request.post('/cms/sendSMS', qs.stringify(data))
 //手机验证码登录

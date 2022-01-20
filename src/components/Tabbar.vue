@@ -5,25 +5,43 @@
       <ul class="tabbar-nav">
         <li class="tabbar-custom">
           <img width="26px" src="../assets/img/userImg.f8bbec5e.png" alt="" />
-          <span>用户名：--</span>
+          <span>用户名：{{ userInfo ? userInfo.nickName : "--" }}</span>
         </li>
-        <li>我的鸡腿：--</li>
+        <li>我的鸡腿：{{ userInfo ? userInfo.coin : "--" }}</li>
         <li>获取鸡腿</li>
         <li>叩丁狼官网</li>
-        <li class="tabbar-loginbtn" @click="loginFn">登录</li>
+        <li v-if="userInfo">购物车{{ cartTotal }}</li>
+        <li v-else class="tabbar-loginbtn" @click="loginFn">登录</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-import bus from './bus'
+import bus from "./bus";
 export default {
-  methods:{
-    loginFn(){
-      bus.$emit('loginopen',true)
-    }
-  }
+  data() {
+    return {};
+  },
+  computed: {
+    cartTotal() {
+      return this.$store.state.userinfo?.cartTotal;
+    },
+    userInfo() {
+      return this.$store.state.userinfo?.userInfo;
+    },
+    // nickName() {
+    //   return this.$store.state.userinfo?.userInfo.nickName;
+    // },
+    // coin() {
+    //   return this.$store.state.userinfo?.userInfo.coin;
+    // },
+  },
+  methods: {
+    loginFn() {
+      bus.$emit("loginopen", true);
+    },
+  },
 };
 </script>
 

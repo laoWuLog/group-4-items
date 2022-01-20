@@ -49,16 +49,16 @@
 </template>
 
 <script>
-import { sendSMS,phoneRegin,getuserProfiles } from "../request/httpApi";
+import { sendSMS, phoneRegin, getuserProfiles } from "../request/httpApi";
 import bus from "./bus";
 export default {
   data() {
     return {
       visible: false, // 控制弹框的显示隐藏
-      phoneNum: "", // 手机号码
+      phoneNum: "13288994464", // 手机号码
       slideMsg: "向右滑动", //滑块显示文字
       slideSuc: false, //滑块默认状态
-      phoneCode: "",
+      phoneCode: "3502",
       showCode: false, //显示秒数
       count: 60, //默认秒数
     };
@@ -125,21 +125,30 @@ export default {
     },
     // 点击登录按钮
     loginFn() {
-      if (this.toVertify()&& this.phoneCode.length===4) {
+      if (this.toVertify() && this.phoneCode.length === 4) {
         //通过校验
         phoneRegin({
-          verifyCode:this.phoneCode,
-          phone:this.phoneNum,
-        }).then((res)=>{
+          verifyCode: this.phoneCode,
+          phone: this.phoneNum,
+        }).then((res) => {
           console.log(res);
-          if(res.code ===0){
-             localStorage.setItem('token',res['x-auth-token'])
-            getuserProfiles().then((res)=>{
-               //获取到用户信息
-               console.log(res);
-             })
+          if (res.code === 0) {
+            localStorage.setItem("token", res["x-auth-token"]);
+            this.$store.dispatch('getUserInfo').then((res)=>{
+              this.close();
+            })
+            // getuserProfiles().then((res) => {
+            //   //获取到用户信息
+            //   //  console.log(res);
+            //   //存储到vuex
+            //   if (res.code === 0) {
+            //     this.$store.commit("updateUserInfo", res.data);
+            //     //关闭登录框
+            //     this.close();
+            //   }
+            // });
           }
-        })
+        });
       }
       // 验证手机号码
       // let reg = /^1[3-9]\d{9}$/;  // 方式二
