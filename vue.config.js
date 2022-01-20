@@ -11,12 +11,10 @@ module.exports = {
                 pathRewrite: {
                     '^/api': ''
                 }
-                // ws: true,
-                // changeOrigin: true
             },
-            // '/foo': {
-            //     target: '<other_url>'
-            // }
+            '^/cms':{
+                target: 'http://192.168.113.249:8081',
+            }
         }
     }
 }

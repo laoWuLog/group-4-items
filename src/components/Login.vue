@@ -16,6 +16,7 @@
               v-model="phoneNum"
             />
           </div>
+          <!-- 滑块验证 -->
           <div class="slide-verify-slider">
             <slide-verify
               :l="42"
@@ -23,16 +24,23 @@
               :w="360"
               :h="155"
               class="slide_box"
-              slider-text="向右滑动"
+              ref="slideVerify"
+              :slider-text="slideMsg"
               @success="onSuccess"
               @fail="onFail"
               @refresh="onRefresh"
             ></slide-verify>
-            <div>{{ msg }}</div>
           </div>
           <div class="check_message">
-            <input type="text" placeholder="请输入短信验证码" />
-            <div class="btn">获取验证码</div>
+            <input
+              type="text"
+              placeholder="请输入短信验证码"
+              v-model="phoneCode"
+            />
+            <div class="btn" @click="getPhoneCode">
+              <span v-if="!showCode">获取验证码</span>
+              <span v-else>{{ count }}s</span>
+            </div>
           </div>
           <div class="btn_login" @click="loginFn">登录</div>
         </div>
@@ -43,11 +51,18 @@
 
 <script>
 import bus from "./bus";
+import { sendSMS, phoneRegin, getUserProfiles } from '../request/httpApi';
 export default {
   data() {
     return {
       visible: false, //控制弹框的显示隐藏
-      phoneNum: "", //手机号码
+      phoneNum: "13668966423", //手机号码
+      slideMsg: "向右滑动", //滑块默认字体
+      slideSuc: true,
+      phoneCode: "",
+      showCode: false, //显示秒数
+      // changeSecondsBg:false,//改变验证码秒数背景色
+      count: 60, //验证码秒数
     };
   },
   created() {
@@ -57,19 +72,85 @@ export default {
     });
   },
   methods: {
-    onSuccess() {},
-    close() {
-      this.visible = false;
-    },
-    // 点击登录按钮
-    loginFn() {
+    //封装验证电话输入框和滑块部分
+    toVertify() {
       // 验证手机号码--正则表达式
       const reg =
         /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
       if (!reg.test(this.phoneNum)) {
         alert("请输入正确的手机号码!");
         return;
+      } else if (!this.slideSuc) {
+        alert("请滑动拼图!");
+        return false;
       }
+      return true;
+    },
+    // 点击获取验证码功能
+    getPhoneCode() {
+      // 验证电话输入框和滑块
+      if (this.toVertify() && !this.showCode) {
+        // 通过校验
+        this.showCode = true;
+        const timer = setInterval(() => {
+          if (this.count > 1) {
+            this.count--;
+          } else {
+            // 1.清除定时器
+            clearInterval(timer);
+            // 2.按钮要重新显示文字
+            this.showCode = false;
+            this.count = 60;
+          }
+        }, 1000);
+        // 发送验证码
+        sendSMS({
+          phone:this.phoneNum,
+        }).then(res=>{
+
+        })
+      }
+    },
+    // 点击登录按钮
+    loginFn() {
+      // 验证手机号码--正则表达式
+      if (this.toVertify() && !this.phoneCode.length===4) {
+        // 通过校验
+        phoneRegin({
+          verifyCode:this.phoneCode,
+          phone:this.phoneNum
+        }).then(res=>{
+          console.log(res);
+          if(res.code===0){
+              localStorage.setItem('token',res['x-auth-token']);
+              // 获取用户信息
+              getUserProfiles().then((res)=>{
+                // 拿到用户信息处理
+              });
+          }
+        });
+      }
+    },
+    // 成功后的回调---滑块花费的时间
+    onSuccess(time) {
+      this.slideSuc = true;
+    },
+    // 失败的回调
+    onFail() {
+      this.slideSuc = false;
+    },
+    // 刷新的回调
+    onRefresh() {
+      this.slideSuc = false;
+    },
+    // 点击x关闭按钮
+    close() {
+      this.visible = false;
+      // 重置输入框的内容和滑块
+      this.phoneNum = "";
+      this.phoneCode = "";
+      this.$refs.slideVerify.reset();
+      this.count = 0;
     },
   },
 };
@@ -96,7 +177,6 @@ export default {
     margin: auto;
     width: 555px;
     height: 423px;
-    // background-color: #fff;
     background: url("../assets/img/login-box-bg.png");
     img {
       position: absolute;
@@ -142,7 +222,6 @@ export default {
         input {
           width: 100%;
           border: 1px solid #ccc;
-
         }
         .btn {
           color: #fff;
@@ -167,6 +246,7 @@ export default {
     }
   }
 }
+// 验证滑块部分
 // 修改第三方插件要使用/deep/
 /deep/.slide_box {
   width: 100%;

@@ -18,8 +18,8 @@ instance.interceptors.request.use((config) => { // config->接收成功的参数
 
 // 重写实例响应后拦截器
 // 语法:instance.interceptors.response.use(参数1,参数2)
-instance.interceptors.response.use((data) => { // data->接收成功的参数
-    return data;
+instance.interceptors.response.use((result) => { // data->接收成功的参数
+    return result.data;
  }, (err) => { // err->接收失败的参数
     return Promise.reject(err);
  })
