@@ -22,16 +22,24 @@
               :r="10"
               :w="360"
               :h="155"
+              ref="slider"
               class="slide_box"
-              slider-text="向右滑动"
+              :slider-text="sliderMag"
               @success="onSuccess"
               @fail="onFail"
               @refresh="onRefresh"
             ></slide-verify>
           </div>
           <div class="yanzheng">
-            <input type="text" placeholder="请输入短信验证码" />
-            <div class="btn">获取验证码</div>
+            <input
+              type="text"
+              placeholder="请输入短信验证码"
+              v-model="phoneCode"
+            />
+            <div class="btn" @click="verify">
+              <span v-if="showCode">获取验证码</span>
+              <span v-else>{{ count }}秒</span>
+            </div>
           </div>
           <div class="btn_login" @click="loginFn">登录</div>
         </div>
@@ -42,11 +50,17 @@
 
 <script>
 import bus from "./bus";
+import { getSMS, getPhoneRegin, getUserProfiles } from "../request/httpAPI";
 export default {
   data() {
     return {
       visible: false, // 控制弹框的显示隐藏
-      phoneNum: "", // 手机号码
+      phoneNum: "15018159937", // 手机号码
+      sliderMag: "向右滑动",
+      sliderSuc: true, //滑块状态
+      phoneCode: "", //手机验证码
+      showCode: true, //获取验证码
+      count: 3, //倒计时
     };
   },
   // beforeCreate() {},
@@ -56,22 +70,93 @@ export default {
     });
   },
   methods: {
-    onSuccess() {},
-    onFail() {},
-    onRefresh() {},
-    close() {
-      this.visible = false;
+    // 获取验证码
+    verify() {
+      // console.log(this.checking(), this.showCode);
+      if (this.checking() && this.showCode) {
+        this.showCode = false;
+        const timer = setInterval(() => {
+          if (this.count > 1) {
+            this.count--;
+          } else {
+            clearInterval(timer);
+            this.count = 3;
+            this.showCode = true;
+          }
+        }, 1000);
+        // 发送请求
+        getSMS({
+          phone: this.phoneNum,
+        }).then((res) => {
+          console.log(res);
+        });
+      }
     },
-    // 点击登录按钮
-    loginFn() {
+    // 验证手机号码与滑块状态
+    checking() {
       // 验证手机号码
-      // let reg = /^1[3-9]\d{9}$/;  // 方式二
+      // let reg = /^1[3-9]\d{9}$/;
       const reg =
         /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
       if (!reg.test(this.phoneNum)) {
         alert("手机号码格式不正确");
-        return;
+        return false;
+      } else if (!this.sliderSuc) {
+        alert("请重新验证滑块");
+        return false;
       }
+      return true;
+    },
+    // 滑动成功回调的函数
+    onSuccess(time) {
+      console.log((time / 1000).toFixed() + "秒");
+      this.sliderSuc = true;
+    },
+    // 滑动失败回调的函数
+    onFail() {
+      this.sliderSuc = false;
+    },
+    // 刷新回调的函数
+    onRefresh() {
+      this.sliderSuc = false;
+    },
+    // 关闭回调的函数
+    close() {
+      // 初始化
+      this.visible = false;
+      this.phoneNum = "";
+      this.phoneCode = "";
+      this.$refs.slider.reset(); // 类似于id,获取元素
+    },
+    // 点击登录按钮
+    loginFn() {
+      if (this.checking() && this.phoneCode.length == 4) {
+        // 通过验证 发送手机注册请求
+        getPhoneRegin({
+          verifyCode: this.phoneCode,
+          phone: this.phoneNum,
+        }).then((res) => {
+          console.log(res);
+          if (res.code == 0) {
+            localStorage.setItem("token", res["x-auth-token"]);
+            // 发送获取用户信息请求
+            getUserProfiles().then((res) => {
+              console.log(res);
+            });
+          }
+        });
+      }
+
+      // // 验证手机号码
+      // // let reg = /^1[3-9]\d{9}$/;
+      // const reg =
+      //   /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
+      // if (!reg.test(this.phoneNum)) {
+      //   alert("手机号码格式不正确");
+      //   return;
+      // } else if (!this.sliderSuc) {
+      //   alert("请重新验证滑块");
+      // }
     },
   },
 };

@@ -87,8 +87,8 @@ export default {};
         border-radius: 0px 10px 10px 0px;
         cursor: pointer;
         img {
-          width: 9px;
-          height: 9px;
+          width: 13px;
+          height: 13px;
           // vertical-align: middle;
         }
       }
