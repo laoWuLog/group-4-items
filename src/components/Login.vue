@@ -92,7 +92,7 @@ export default {
         // 通过校验
         this.showCode = true;
         const timer = setInterval(() => {
-          if (this.count > 0) {
+          if (this.count > 1) {
             this.count--;
           } else {
             // 定时器清除
@@ -110,22 +110,6 @@ export default {
 
       })
     },
-    onSuccess() {
-      this.slibeSuc = true;
-    },
-    onFail() {
-      this.slibeSuc = false;
-    },
-    onRefresh() {
-      this.slibeSuc = false;
-    },
-    close() {
-      this.visible = false;
-      this.phoneNum = "";
-      this.phoneCode = "";
-      this.$refs.slideVerify.reset();
-      this.count=0;
-    },
     // 点击登录按钮
     loginFn() {
      if (this.toVertify() && this.phoneCode.length === 4) {
@@ -138,12 +122,42 @@ export default {
           if (res.code === 0) {
             localStorage.setItem("token", res["x-auth-token"]);
             // 获取用户信息
-            getUserProfiles().then((res) => {
-              // 拿到用户信息处理
-            });
+            this.$store.dispatch('getUserInfo').then((res)=>{
+               this,close();
+            })
+         /*    getUserProfiles().then((res) => {
+              // 拿到用户信息处理(存储到vuex)
+              if(res.code===0){
+                this.$store.commit('updateUserInfo',res.data);
+                // 关闭登录框
+                this,close();
+              }
+            }); */
           }
         });
       }
+    },
+     // 成功后的回调
+    onSuccess(time) {
+      this.slideSuc = true;
+      // const sec = (time/1000).toFixed(1);
+      // console.log(sec);
+      // this.slideMsg = '耗时 ' + sec + 's';
+    },
+    onFail() {
+      this.slideSuc = false;
+    },
+    onRefresh() {
+      this.slideSuc = false;
+      // this.slideMsg = '向右滑动'
+    },
+    close() {
+      this.visible = false;
+      // 重置输入框的内容和滑块
+      this.phoneNum = "";
+      this.phoneCode = "";
+      this.$refs.slideVerify.reset();
+      this.count = 0;
     },
   },
 };

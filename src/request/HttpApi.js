@@ -11,10 +11,10 @@ import qs from 'qs'
 export const getProductRec = () => request.get('/cms/products/recommend')
 
 // 用户信息    
-export const getUserProfiles = () => request.get('/cms/shop/userProfiles',{headers:{'x-auth-token':localStorage.setItem['token']}})
+export const getUserProfiles = () => request.get('/cms/shop/userProfiles')
 
 // 查看购物车
-export const getShopCarts = () => request.get('/cms/shop/carts',{headers:{'x-auth-token':'xxxx'}})
+export const getShopCarts = () => request.get('/cms/shop/carts')
 
 // 获取手机验证码
 export const sendSMS=(data)=>request.post('/cms/sendSMS',qs.stringify(data))
