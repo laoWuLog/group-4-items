@@ -59,7 +59,7 @@ export default {
       phoneNum: "13668966423", //手机号码
       slideMsg: "向右滑动", //滑块默认字体
       slideSuc: true,
-      phoneCode: "",
+      phoneCode: "2621",
       showCode: false, //显示秒数
       // changeSecondsBg:false,//改变验证码秒数背景色
       count: 60, //验证码秒数
@@ -114,18 +114,23 @@ export default {
     // 点击登录按钮
     loginFn() {
       // 验证手机号码--正则表达式
-      if (this.toVertify() && !this.phoneCode.length===4) {
+      if (this.toVertify() && this.phoneCode.length===4) {
         // 通过校验
         phoneRegin({
           verifyCode:this.phoneCode,
-          phone:this.phoneNum
-        }).then(res=>{
+          phone:this.phoneNum,
+        }).then((res)=>{
           console.log(res);
           if(res.code===0){
               localStorage.setItem('token',res['x-auth-token']);
               // 获取用户信息
               getUserProfiles().then((res)=>{
                 // 拿到用户信息处理
+                if(res.code===0){
+                  this.$store.commit('updateUserInfo',res.data);
+                  // 关闭登录框
+                  this.close();
+                }
               });
           }
         });

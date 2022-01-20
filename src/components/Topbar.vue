@@ -4,28 +4,45 @@
       <p>欢迎来到叩丁严选</p>
       <ul class="topbar_content_right">
         <li class="topbar_user">
-          <img width="26px" src="../assets/img/userImg.f8bbec5e.png" alt="" />
-          <span>用户名：--</span>
+          <img
+            width="26px"
+            :src="
+              userInfo ? userInfo.headImg : require('../assets/img/userImg.f8bbec5e.png')
+            "
+            alt=""
+          />
+          <span>用户名：{{ userInfo ? userInfo.nickName : "--" }}</span>
         </li>
-        <li>我的鸡腿：--</li>
+        <li>我的鸡腿：{{ userInfo ? userInfo.coin : "--" }}</li>
         <li>获取鸡腿</li>
         <li>叩丁狼官网</li>
-        <li class="topbar_loginbtn" @click="loginFn">登录</li>
+        <li v-if='userInfo'>购物车{{cartTotal}}</li>
+        <li v-else class="topbar_loginbtn" @click="loginFn">登录</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-import bus from './bus';
+import bus from "./bus";
 export default {
-  methods:{
-    loginFn(){
+  data() {
+    return {};
+  },
+  computed: {
+    cartTotal() {
+      return this.$store.state.userinfo?.cartTotal;
+    },
+    userInfo() {
+      return this.$store.state.userinfo?.userInfo;
+    },
+  },
+  methods: {
+    loginFn() {
       // 通过bus传值
-      bus.$emit('loginvisible',true)
-    }
-  }
-
+      bus.$emit("loginvisible", true);
+    },
+  },
 };
 </script>
 
