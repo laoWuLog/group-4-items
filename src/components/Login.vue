@@ -51,6 +51,7 @@
 <script>
 import { sendSMS, phoneRegin, getuserProfiles } from "../request/httpApi";
 import bus from "./bus";
+
 export default {
   data() {
     return {
@@ -75,10 +76,16 @@ export default {
       const reg =
         /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
       if (!reg.test(this.phoneNum)) {
-        alert("手机号码格式不正确");
+        this.$toast({
+          message: "手机号码不正确",
+          type: "error",
+        });
         return false;
       } else if (!this.slideSuc) {
-        alert("请滑动拼图");
+        this.$toast({
+          message: "请滑动拼图",
+          type: "error",
+        });
         return false;
       }
       return true;
@@ -134,9 +141,9 @@ export default {
           console.log(res);
           if (res.code === 0) {
             localStorage.setItem("token", res["x-auth-token"]);
-            this.$store.dispatch('getUserInfo').then((res)=>{
+            this.$store.dispatch("getUserInfo").then((res) => {
               this.close();
-            })
+            });
             // getuserProfiles().then((res) => {
             //   //获取到用户信息
             //   //  console.log(res);
