@@ -10,6 +10,7 @@
     <!-- 底部 -->
     <Footer />
     <Login />
+    <button @click="showToast">显示Toast</button>
   </div>
 </template>
 <script>
@@ -23,12 +24,21 @@ export default {
     Topbar,
     Navbar,
     Footer,
-    Login
+    Login,
   },
+  methods: {
+    showToast() {
+      this.$toast({
+        message:'这个App.vue里面的消息',
+        type:'warning',
+        duration:3000
+       });
+      //  this.$message1('这是一条消息')
+    },
+  },                                   
 };
 </script>
 
 
 <style lang="less">
-
 </style>

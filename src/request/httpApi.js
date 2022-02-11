@@ -13,10 +13,10 @@ export function getProductRec(){
 export const getProductRec = () => request.get('/cms/products/recommend');
 
 // 2.获取用户信息
-export const getUserProfiles = () => request.get('/cms/shop/userProfiles', { headers: { 'x-auth-token': localStorage.getItem('token') } });
+export const getUserProfiles = () => request.get('/cms/shop/userProfiles');
 
 // 3.查看购物车
-export const getShopCarts = () => request.get('/cms/shop/carts', { headers: { 'x-auth-token': 'xxx' } });
+export const getShopCarts = () => request.get('/cms/shop/carts');
 
 // 4.获取手机验证码
 export const sendSMS = (data) => request.post('/cms/sendSMS', qs.stringify(data));
