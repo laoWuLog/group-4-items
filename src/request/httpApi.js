@@ -23,3 +23,5 @@ export const sendSMS = (data) => request.post('/cms/sendSMS', qs.stringify(data)
 
 // 5.手机验证码登录
 export const phoneRegin = (data) => request.post('/cms/phoneRegin', qs.stringify(data));
+// 6.扫码登录
+export const wechatPCLogin = (data) => request.post('/cms/wechatUsers/PCLogin', qs.stringify(data));

@@ -1,0 +1,7 @@
+.impoverBox .title, .impoverBox .info{
+    display: none;
+}
+
+.impoverBox .qrcode{
+    margin-top: 20px;
+}

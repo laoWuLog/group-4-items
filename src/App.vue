@@ -11,6 +11,7 @@
     <Footer />
     <Login />
     <button @click="showToast">显示Toast</button>
+    <User />
   </div>
 </template>
 <script>
@@ -18,6 +19,7 @@ import Topbar from "./components/Topbar.vue";
 import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
 import Login from "./components/Login.vue";
+import User from './views/User.vue';
 
 export default {
   components: {
@@ -25,6 +27,7 @@ export default {
     Navbar,
     Footer,
     Login,
+    User,
   },
   methods: {
     showToast() {

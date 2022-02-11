@@ -7,11 +7,11 @@
         <section class="phoneOrwechat">
           <span
             class="border"
-            :class="{ active: showForm }"
+            :class="{ 'active': showForm }"
             @click="showForm = true"
             >手机号码登录</span
           >
-          <span :class="{ active: !showForm }"
+          <span :class="{ 'active': !showForm }"
             @click="showWechatRrcode"
             >微信扫码登录</span>
         </section>
@@ -52,6 +52,8 @@
           </div>
           <div class="btn_login" @click="loginFn">登录</div>
         </div>
+        <!-- 微信二维码 -->
+        <div class="qrcode" v-show='!showForm' id="weixin"></div>
       </div>
     </div>
   </div>
@@ -71,6 +73,7 @@ export default {
       showCode: false, //显示秒数
       // changeSecondsBg:false,//改变验证码秒数背景色
       count: 60, //验证码秒数
+      showForm:true
     };
   },
   created() {
@@ -80,6 +83,25 @@ export default {
     });
   },
   methods: {
+    // 显示微信扫码登录
+    showWechatRrcode(){
+      this.showForm=false;
+      // 微信登录第一步:申请微信登录二维码
+      let _this=this;
+      new WxLogin({
+        id:'weixin',
+        appid:'wx67cfaf9e3ad31a0d',
+        scope: "snsapi_login",
+        // 扫码成功后重定向的接口
+        redirect_uri: "https://sc.wolfcode.cn/cms/wechatUsers/shop/PC",
+        // state填写编码后的url
+        state: encodeURIComponent(
+          window.btoa("http://127.0.0.1:8081" + _this.$route.path)
+      ),
+      // 调用样式文件
+      href:'data:text/css;base64,LmltcG93ZXJCb3ggLnRpdGxlLCAuaW1wb3dlckJveCAuaW5mb3sNCiAgICBkaXNwbGF5OiBub25lOw0KfQ0KDQouaW1wb3dlckJveCAucXJjb2Rlew0KICAgIG1hcmdpbi10b3A6IDIwcHg7DQp9',
+      })
+    },
     //封装验证电话输入框和滑块部分
     toVertify() {
       // 验证手机号码--正则表达式
@@ -138,7 +160,7 @@ export default {
           if (res.code === 0) {
             localStorage.setItem("token", res["x-auth-token"]);
             // 获取用户信息
-            this.$store.disoatch("getUserInfo").then((res) => {
+            this.$store.dispatch("getUserInfo").then((res) => {
               this.close();
             });
           }
@@ -261,6 +283,11 @@ export default {
       }
     }
   }
+}
+.qrcode {
+  display: flex;
+  justify-content: center;
+  margin-top: -20px;
 }
 // 验证滑块部分
 // 修改第三方插件要使用/deep/
