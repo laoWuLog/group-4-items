@@ -6,7 +6,7 @@
     <Banner></Banner>
     <div>
       <button @click="showToast">按钮按钮</button>
-      <!-- <router-view /> -->
+      <router-view />
     </div>
     <!-- 中间内容 -->
     <div class="product">
@@ -27,6 +27,7 @@ import Footer from "./components/Footer.vue";
 import Banner from "@/components/Banner.vue";
 import Recommend from "./components/Recommend.vue";
 import Login from "./components/Login.vue";
+import LoginOut from "./views/User.vue";
 
 export default {
   components: {
@@ -36,6 +37,7 @@ export default {
     Banner,
     Recommend,
     Login,
+    LoginOut,
   },
   methods: {
     // 调用消息弹框方法

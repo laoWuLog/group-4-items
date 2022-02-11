@@ -105,10 +105,10 @@ export default {
         appid: "wx67cfaf9e3ad31a0d", // 这个appid要填死
         scope: "snsapi_login",
         // 扫码成功后重定向的接口
-        redirect_uri: "https://sc.wolfcode.cn/ cms/wechatUsers/shop/PC",
+        redirect_uri: "https://sc.wolfcode.cn/cms/wechatUsers/shop/PC",
         // state填写编码后的url
         state: encodeURIComponent(
-          window.btoa("http://127.0.0.1:8081" + _this.$route.path)
+          window.btoa("http://127.0.0.1:8080" + _this.$route.path)
         ),
         // 调用样式文件
         href: "data:text/css;base64,LmltcG93ZXJCb3ggLnRpdGxlLCAuaW1wb3dlckJveCAuaW5mb3sNCiAgICBkaXNwbGF5OiBub25lOw0KfQ0KDQouaW1wb3dlckJveCAucXJjb2Rlew0KICAgIG1hcmdpbi10b3A6IDIwcHg7DQp9",

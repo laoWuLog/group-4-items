@@ -29,3 +29,8 @@ export const getPhoneRegin = (data) => {
   //注意:加上{}要返回return 不加的话就默认返回undefined
   return request.post("/cms/phoneRegin", qs.stringify(data));
 };
+
+//微信扫码登录
+export const wechatPcLogin = (data) => {
+ return request.post("/cms/wechatUsers/PCLogin", qs.stringify(data));
+};

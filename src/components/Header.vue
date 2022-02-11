@@ -74,7 +74,7 @@ export default {};
         }
         &:focus {
           // border: 1px solid #333;
-          box-shadow: 0 0 5px 1px #03a9f4;
+          box-shadow: 0 0 10px 1px #03a9f4;
         }
       }
       #search {

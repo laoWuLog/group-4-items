@@ -14,7 +14,13 @@
             "
             alt=""
           /> -->
-          <img src="../assets/img/userImg.f8bbec5e.png" alt="" />
+          <img
+            :src="
+              userInfo ? userInfo.headImg : '../assets/img/userImg.f8bbec5e.png'
+            "
+            alt="个人信息"
+            @click="getUserInfo"
+          />
           <span>用户名:{{ userInfo ? userInfo.nickName : "--" }}</span>
         </li>
         <li>我的鸡腿:{{ userInfo ? userInfo.coin : "--" }}</li>
@@ -34,6 +40,9 @@ export default {
   methods: {
     login() {
       bus.$emit("loginvisible", true);
+    },
+    getUserInfo() {
+      this.$router.push("/userInfo").catch(() => {});
     },
   },
   created() {
