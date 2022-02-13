@@ -17,9 +17,14 @@ export const getUserProfiles = () => request.get('/cms/shop/userProfiles')
 export const getShopCarts = () => request.get('/cms/shop/carts')
 
 // 获取手机验证码
-export const sendSMS=(data)=>request.post('/cms/sendSMS',qs.stringify(data))
+export const sendSMS = (data) => request.post('/cms/sendSMS', qs.stringify(data))
 
 // 手机验证码登录
-export const phoneRegin=(data)=>request.post('/cms/phoneRegin',qs.stringify(data))
+export const phoneRegin = (data) => request.post('/cms/phoneRegin', qs.stringify(data))
 // 微信扫码登录
-export const PCLogin=(data)=>request.post('/cms/wechatUsers/PCLogin',qs.stringify(data))
+export const PCLogin = (data) => request.post('/cms/wechatUsers/PCLogin', qs.stringify(data))
+
+// 获取商品详情
+export const getProductsDetail = (id) => request.get('/cms/products/' + id)
+// 加入到购物车
+export const getCarts=(data)=>request.post('/cms/shop/carts/add',qs.stringify(data))

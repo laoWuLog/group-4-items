@@ -20,6 +20,14 @@ instance.interceptors.request.use((config)=>{
 
 // 重写实例响应后拦截器
 instance.interceptors.response.use((result)=>{
+  // 统一处理code值不为0的所有错误提醒
+  if(result.data.code!==0){
+    toast({
+      message:result.data.message || '请求失败',
+      type:'error',
+      duration:10000
+    })
+  }
   return result.data;
 },(err)=>{
   return Promise.reject(err)

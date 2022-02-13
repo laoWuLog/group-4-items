@@ -8,16 +8,28 @@ import {
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const routes = [{
     path: '/index',
     name: 'index',
     component: () => import( /* webpackChunkName: "index" */ '../views/index.vue')
   },
   {
     path: '/user',
+    redirect:'/user/cart',
     name: 'User',
-    component: () => import( /* webpackChunkName: "user" */ '../views/User.vue')
+    component: () => import( /* webpackChunkName: "user" */ '../views/User.vue'),
+    children: [
+      {
+        path: 'cart',
+        name: 'Cart',
+        component: () => import( /* webpackChunkName: "cart" */ '../components/Cart.vue'),
+       },
+    ]
+  },
+  {
+    path: '/detail/:pid',
+    name: 'Detail',
+    component: () => import( /* webpackChunkName: "detail" */ '../views/Detail.vue')
   },
 
 ]
@@ -56,7 +68,7 @@ router.beforeEach((to, from, next) => {
           // 替换掉路径上的code参数
           console.log(to);
           router.replace(to.path)
-          
+
         })
         next()
       }

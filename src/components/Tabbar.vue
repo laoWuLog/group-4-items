@@ -17,7 +17,7 @@
         <li>我的鸡腿:{{ userInfo ? userInfo.coin  : "--" }}</li>
         <li>获取鸡腿</li>
         <li>叩丁狼官网</li>
-        <li v-if="userInfo">购物车{{cartTotal}}</li>
+        <li v-if="userInfo" @click="addCart">购物车{{cartTotal}}</li>
         <li v-else class="tabbar_loginbtn" @click="loginFn">登录</li>
       </ul>
     </div>
@@ -51,6 +51,9 @@ export default {
       // 通过bus传值
       bus.$emit("loginvisible", true);
     },
+    addCart(){
+      this.$router.push('/user')
+    }
   },
 };
 </script>
