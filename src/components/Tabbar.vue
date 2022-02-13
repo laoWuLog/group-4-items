@@ -4,7 +4,7 @@
       <p>欢迎来到叩丁狼严选</p>
       <ul class="tabbar-nav">
         <li class="tabbar-custom">
-          <img width="26px" src="../assets/img/userImg.f8bbec5e.png" alt="" />
+          <img width="26px"  :src="userInfo ? userInfo.headImg : '../assets/img/userImg.f8bbec5e.png'" alt="" />
           <span>用户名：{{ userInfo ? userInfo.nickName : "--" }}</span>
         </li>
         <li>我的鸡腿：{{ userInfo ? userInfo.coin : "--" }}</li>

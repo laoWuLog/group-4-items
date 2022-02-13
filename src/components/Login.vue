@@ -5,10 +5,17 @@
       <div class="modal_content">
         <img @click="close" src="../assets/img/close.png" alt="" />
         <section class="phoneOrwechat">
-          <span class="active">手机号码登录</span>
-          <span class="">微信扫码登录</span>
+          <span
+            :class="[isShowForm ? 'fonts' : '', 'active']"
+            @click="isShowForm = true"
+            >手机号码登录</span
+          >
+          <span :class="[isShowForm ? '' : 'fonts']" @click="weixinClick"
+            >微信扫码登录</span
+          >
         </section>
-        <div class="phone_login">
+        <!-- 手机号码登录 -->
+        <div class="phone_login" v-show="isShowForm">
           <div class="phoneNumber">
             <input
               type="text"
@@ -43,6 +50,8 @@
           </div>
           <div class="btn_login" @click="loginFn">登录</div>
         </div>
+        <!-- 微信扫码登录 -->
+        <div id="weixin" class="qrcode" v-show="!isShowForm"></div>
       </div>
     </div>
   </div>
@@ -55,6 +64,7 @@ import bus from "./bus";
 export default {
   data() {
     return {
+      isShowForm: true,
       visible: false, // 控制弹框的显示隐藏
       phoneNum: "13288994464", // 手机号码
       slideMsg: "向右滑动", //滑块显示文字
@@ -71,6 +81,26 @@ export default {
     });
   },
   methods: {
+    weixinClick() {
+      // 点击切换微信扫码登录这一项，并向微信扫码登录
+      this.isShowForm = false;
+
+      // 微信登录第一步：申请微信登录二维码
+      let _this = this;
+      new WxLogin({
+        id: "weixin",
+        appid: "wx67cfaf9e3ad31a0d", // 这个appid要填死
+        scope: "snsapi_login",
+        // 扫码成功后重定向的接口
+        redirect_uri: "https://sc.wolfcode.cn/cms/wechatUsers/shop/PC",
+        // state填写编码后的url
+        state: encodeURIComponent(
+          window.btoa("http://192.168.6.165:8080" + _this.$route.path)
+        ),
+        // 调用样式文件
+        href: "data:text/css;base64,LmltcG93ZXJCb3ggLnRpdGxlLCAuaW1wb3dlckJveCAuaW5mb3sNCiAgICBkaXNwbGF5OiBub25lOw0KfQ0KDQouaW1wb3dlckJveCAucXJjb2Rlew0KICAgIG1hcmdpbi10b3A6IDIwcHg7DQp9",
+      });
+    },
     //验证电话输入框滑块
     toVertify() {
       const reg =
@@ -144,16 +174,16 @@ export default {
             this.$store.dispatch("getUserInfo").then((res) => {
               this.close();
             });
-            // getuserProfiles().then((res) => {
-            //   //获取到用户信息
-            //   //  console.log(res);
-            //   //存储到vuex
-            //   if (res.code === 0) {
-            //     this.$store.commit("updateUserInfo", res.data);
-            //     //关闭登录框
-            //     this.close();
-            //   }
-            // });
+            getuserProfiles().then((res) => {
+              //获取到用户信息
+              //  console.log(res);
+              //存储到vuex
+              if (res.code === 0) {
+                this.$store.commit("updateUserInfo", res.data);
+                //关闭登录框
+                this.close();
+              }
+            });
           }
         });
       }
@@ -208,6 +238,9 @@ export default {
         border-right: 1px solid #ccc;
         padding-right: 10px;
         margin-right: 10px;
+      }
+      .fonts {
+        font-weight: 800;
       }
     }
     .phone_login {
@@ -265,6 +298,12 @@ export default {
         text-align: center;
         cursor: pointer;
       }
+    }
+    .qrcode {
+      display: flex;
+      justify-content: center;
+      position: relative;
+      top: -20px;
     }
   }
 }

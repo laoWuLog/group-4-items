@@ -11,6 +11,7 @@
     </div>
     <Foorter />
     <button @click="showToast">显示Toast</button>
+    <User/>
     <!-- <Toast/> -->
     <!-- 底部 -->
   </div>
@@ -20,6 +21,7 @@ import Header from "./components/Header.vue";
 import Tabbar from "./components/Tabbar.vue";
 import Foorter from "./components/Foorter.vue";
 import Login from "./components/Login.vue";
+import User from './views/User.vue'
 // import Toast from './components/Toast.vue'
 export default {
   components: {
@@ -28,6 +30,7 @@ export default {
     Foorter,
     Login,
     // Toast
+    User
   },
   methods: {
     showToast() {

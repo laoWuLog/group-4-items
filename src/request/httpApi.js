@@ -19,3 +19,5 @@ export const getShopCarts = () => request.get('/cms/shop/carts', 1)
 export const sendSMS = (data) => request.post('/cms/sendSMS', qs.stringify(data))
 //手机验证码登录
 export const phoneRegin = (data) => request.post('/cms/phoneRegin', qs.stringify(data))
+//微信扫码
+export const wechatPCLogin = (data) => request.post('/cms/wechatUsers/PCLogin', qs.stringify(data))
