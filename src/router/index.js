@@ -2,19 +2,28 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 // import Home from '../views/Home.vue'
 import store from '../store/index'
+import {
+  PCLogin
+} from '../request/HttpApi'
 
 Vue.use(VueRouter)
 
-const routes = [{
+const routes = [
+  {
     path: '/index',
     name: 'index',
     component: () => import( /* webpackChunkName: "index" */ '../views/index.vue')
+  },
+  {
+    path: '/user',
+    name: 'User',
+    component: () => import( /* webpackChunkName: "user" */ '../views/User.vue')
   },
 
 ]
 
 const router = new VueRouter({
-
+  mode: 'history',
   routes
 })
 
@@ -22,21 +31,39 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token');
   const userinfo = store.userinfo;
+  console.log(to, from);
+  const code = to.query.code
   if (token && !userinfo) {
     // 重新获取用户信息数据
-   /*  getUserProfiles().then(res => {
-      if (res.data === 0) {
-        // 把用户信息数据存储到vuex(调用vuex里面的mutations方法updateUesrInfo)
-        store.commit('updateUserInfo', res.data);
-      }
-    }) */
+    /*  getUserProfiles().then(res => {
+       if (res.data === 0) {
+         // 把用户信息数据存储到vuex(调用vuex里面的mutations方法updateUesrInfo)
+         store.commit('updateUserInfo', res.data);
+       }
+     }) */
 
     store.dispatch('getUserInfo')
-  next()
-  }else{
+    next()
+  } else if (code && !token) {
+    // code通过接口换取token
+    PCLogin({
+      code
+    }).then(res => {
+      if (res.code === 0) {
+        localStorage.setItem("token", res["x-auth-token"]);
+        // 获取用户信息,（调用用户信息接口,把返回数据存储到vuex）
+        store.dispatch('getUserInfo').then(res => {
+          // 替换掉路径上的code参数
+          console.log(to);
+          router.replace(to.path)
+          
+        })
+        next()
+      }
+    })
+  } else {
     next()
   }
 })
 
 export default router
-

@@ -8,11 +8,36 @@
       </div>
       <div class="c">
         <ul>
-          <li>首页</li>
-          <li>全部商品</li>
-          <li>个人中心</li>
-          <li>我的订单</li>
-          <li>专属福利</li>
+          <li
+            :class="$route.path === '/home' ? 'active' : ''"
+            @click="$router.replace('/home')"
+          >
+            首页
+          </li>
+          <li
+            :class="$route.path === '/goods' ? 'active' : ''"
+            @click="$router.replace('/goods')"
+          >
+            全部商品
+          </li>
+          <li
+            :class="$route.path === '/user' ? 'active' : ''"
+            @click="$router.replace('/user')"
+          >
+            个人中心
+          </li>
+          <li
+            :class="$route.path === '/order' ? 'active' : ''"
+            @click="$router.push('/order')"
+          >
+            我的订单
+          </li>
+          <li
+            :class="$route.path === '/free' ? 'active' : ''"
+            @click="$router.push('/free')"
+          >
+            专属福利
+          </li>
         </ul>
       </div>
       <div class="r">
@@ -36,17 +61,16 @@ export default {};
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .c  {
-       ul{
-          width: 500px;
-      display: flex;
-      justify-content: space-between; 
-       }
-     
-      ul li:hover{
-         color: rgb(45, 45, 146);
+    .c {
+      ul {
+        width: 500px;
+        display: flex;
+        justify-content: space-between;
       }
-    
+
+     .active {
+        color: rgb(45, 45, 146);
+      }
     }
     .r {
       display: flex;
@@ -62,7 +86,7 @@ export default {};
       input:focus {
         outline: none;
         border: 1px solid #cccccc;
-      //   background: #f0ecec;
+        //   background: #f0ecec;
       }
     }
   }

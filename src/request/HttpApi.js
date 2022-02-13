@@ -21,3 +21,5 @@ export const sendSMS=(data)=>request.post('/cms/sendSMS',qs.stringify(data))
 
 // 手机验证码登录
 export const phoneRegin=(data)=>request.post('/cms/phoneRegin',qs.stringify(data))
+// 微信扫码登录
+export const PCLogin=(data)=>request.post('/cms/wechatUsers/PCLogin',qs.stringify(data))

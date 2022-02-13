@@ -6,10 +6,18 @@
       <div class="modal_content">
         <img @click="close" src="../assets/img/close.png" alt="" />
         <section class="phoneOrwechat">
-          <span class="active">手机号码登录</span>
-          <span class="">微信扫码登录</span>
+          <span
+            class="border"
+            :class="{ active: isShowForm }"
+            @click="isShowForm = true"
+            >手机号码登录</span
+          >
+          <span :class="{ active: !isShowForm }" @click="weixinClick"
+            >微信扫码登录</span
+          >
         </section>
-        <div class="phone_login">
+        <!-- 手机号码登录内容 -->
+        <div class="phone_login" v-show="isShowForm">
           <div class="phoneNumber">
             <input
               type="text"
@@ -44,13 +52,15 @@
           </div>
           <div class="btn_login" @click="loginFn">登录</div>
         </div>
+        <!-- 微信二维码 -->
+        <div id="weixin" class="qrcode" v-show="!isShowForm">二维码</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { sendSMS,getUserProfiles ,phoneRegin } from '../request/HttpApi';
+import { sendSMS, getUserProfiles, phoneRegin } from "../request/HttpApi";
 import bus from "./bus";
 export default {
   data() {
@@ -62,7 +72,7 @@ export default {
       phoneCode: "",
       showCode: false, // 显示秒数
       count: 60,
-
+      isShowForm: true,
     };
   },
   // beforeCreate() {},
@@ -72,18 +82,38 @@ export default {
     });
   },
   methods: {
+    weixinClick() {
+      // 点击切换微信扫码登录这一项，并向微信扫码登录
+      this.isShowForm = false;
+
+      // 微信登录第一步：申请微信登录二维码
+      let _this = this;
+      new WxLogin({
+        id: "weixin",
+        appid: "wx67cfaf9e3ad31a0d", // 这个appid要填死
+        scope: "snsapi_login",
+        // 扫码成功后重定向的接口
+        redirect_uri: "https://sc.wolfcode.cn/cms/wechatUsers/shop/PC",
+        // state填写编码后的url
+        state: encodeURIComponent(
+          window.btoa("http://127.0.0.1:8080" + _this.$route.path)
+        ),
+        // 调用样式文件
+        href: "data:text/css;base64,LmltcG93ZXJCb3ggLnRpdGxlLCAuaW1wb3dlckJveCAuaW5mb3sNCiAgICBkaXNwbGF5OiBub25lOw0KfQ0KDQouaW1wb3dlckJveCAucXJjb2Rlew0KICAgIG1hcmdpbi10b3A6IDIwcHg7DQp9",
+      });
+    },
     // 验证电话输入框和滑块
     toVertify() {
       const reg =
         /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
       if (!reg.test(this.phoneNum)) {
         // alert("手机号码格式不正确");
-       this.$toast({
-          message: '手机号码格式不正确',
-          type: 'error'
-        })
+        this.$toast({
+          message: "手机号码格式不正确",
+          type: "error",
+        });
         return false;
-console.error();        // alert("请滑动拼图");
+        console.error(); // alert("请滑动拼图");
 
         return false;
       }
@@ -105,31 +135,29 @@ console.error();        // alert("请滑动拼图");
             this.showCode = false;
             this.count = 60;
           }
-        },1000);
+        }, 1000);
       }
       // 发送请求
       sendSMS({
-        phone:this.phoneNum
-      }).then(res=>{
-
-      })
+        phone: this.phoneNum,
+      }).then((res) => {});
     },
     // 点击登录按钮
     loginFn() {
-     if (this.toVertify() && this.phoneCode.length === 4) {
+      if (this.toVertify() && this.phoneCode.length === 4) {
         // 通过校验
         phoneRegin({
           verifyCode: this.phoneCode,
           phone: this.phoneNum,
         }).then((res) => {
-          console.log(res)
+          console.log(res);
           if (res.code === 0) {
             localStorage.setItem("token", res["x-auth-token"]);
             // 获取用户信息
-            this.$store.dispatch('getUserInfo').then((res)=>{
-               this,close();
-            })
-         /*    getUserProfiles().then((res) => {
+            this.$store.dispatch("getUserInfo").then((res) => {
+              this, close();
+            });
+            /*    getUserProfiles().then((res) => {
               // 拿到用户信息处理(存储到vuex)
               if(res.code===0){
                 this.$store.commit('updateUserInfo',res.data);
@@ -141,7 +169,7 @@ console.error();        // alert("请滑动拼图");
         });
       }
     },
-     // 成功后的回调
+    // 成功后的回调
     onSuccess(time) {
       this.slideSuc = true;
       // const sec = (time/1000).toFixed(1);
@@ -201,10 +229,13 @@ console.error();        // alert("请滑动拼图");
       justify-content: center;
       padding-top: 40px;
       margin-bottom: 30px;
-      .active {
+      .border {
         border-right: 1px solid #ccc;
         padding-right: 10px;
         margin-right: 10px;
+      }
+      .active {
+        font-weight: 700;
       }
     }
     .phone_login {
@@ -263,6 +294,12 @@ console.error();        // alert("请滑动拼图");
       }
     }
   }
+}
+#weixin {
+  /* background-color: #fcf; */
+  display: flex;
+  justify-content: center;
+  margin-top: -20px;
 }
 /deep/ .slide_box {
   width: 100%;
