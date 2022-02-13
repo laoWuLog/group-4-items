@@ -12,23 +12,28 @@ import {
 Vue.use(VueRouter)
 
 const routes = [{
-    path: '/index',
+    path: '/',
+    redirect: "/index",
     name: 'index',
     component: () => import( /* webpackChunkName: "about" */ '../views/Index.vue')
-  }
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: Home
-  // },
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
+  },
+  {
+    path: '/detail/:pid',
+    name: 'detail',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Detail.vue')
+  },
+  {
+    path: '/user',
+    redirect: "user/cart",
+    name: 'user',
+    component: () => import( /* webpackChunkName: "user" */ '../views/User.vue'),
+    children: [{
+      path: 'cart',
+      name: 'cart',
+      component: () => import( /* webpackChunkName: "cart" */ '../components/Cart.vue')
+
+    }]
+  },
 ]
 const router = new VueRouter({
   mode: 'history',
@@ -57,7 +62,7 @@ router.beforeEach((to, from, next) => {
       if (res.code === 0) {
         localStorage.setItem('token', res['x-auth-token']);
         //获取用户信息（调用获取信息接口, 把返回数据存储到vuex）
-        store.dispatch('getUserInfo').then(res=>{
+        store.dispatch('getUserInfo').then(res => {
           //替换路径上code参数
           router.replace(to.path)
         })

@@ -20,7 +20,7 @@ export default {
       // 当前实例进行销毁
       this.$destroy();
       // 移除节点
-      console.log(this);
+      // console.log(this);
       this.$el.parentNode.removeChild(this.$el);
     },this.duration);
   },
