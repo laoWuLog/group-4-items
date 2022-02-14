@@ -14,23 +14,27 @@ const routes = [
       import(/* webpackChunkName: "index" */ "../views/Index.vue"),
   },
   {
-    path:'/userInfo',
-    name:'userInfo',
-    component:()=>import(/* webpackChunkName: "userInfo" */ "../views/User.vue"),
-  }
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: Home
-  // },
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
+    path: "/userInfo",
+    name: "userInfo",
+    redirect: "/userInfo/cart",
+    component: () =>
+      import(/* webpackChunkName: "userInfo" */ "../views/User.vue"),
+    children: [
+      {
+        path: "cart",
+        name: "cart",
+        component: () =>
+          import(/* webpackChunkName: "cart" */ "../components/Cart.vue"),
+      },
+    ],
+  },
+  {
+    // 详情页
+    path: "/detail/:pid", //动态添加
+    name: "detail",
+    component: () =>
+      import(/* webpackChunkName: "detail" */ "../views/Detail.vue"),
+  },
 ];
 
 //const没有声明提升,需要放到上面
@@ -43,7 +47,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   let token = localStorage.getItem("token"); //获取token
   let userInfo = store.state.userInfo;
-  console.log(to);
+  // console.log(to);
   let code = to.query.code;
   if (token && !userInfo) {
     // getUserProfiles().then((res) => {

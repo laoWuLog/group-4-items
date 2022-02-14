@@ -5,10 +5,7 @@ import qs from "qs";
 export const recommend = () => request.get("/cms/products/recommend"); //没有加{} return省略
 
 // 查看购物车
-export const getShopCarts = () =>
-  request.get("/cms/shop/carts", {
-    headers: { "x-auth-token": "xxx" },
-  });
+export const getShopCarts = () => request.get("/cms/shop/carts");
 
 // 用户信息
 export const getUserProfiles = () => {
@@ -32,5 +29,12 @@ export const getPhoneRegin = (data) => {
 
 //微信扫码登录
 export const wechatPcLogin = (data) => {
- return request.post("/cms/wechatUsers/PCLogin", qs.stringify(data));
+  return request.post("/cms/wechatUsers/PCLogin", qs.stringify(data));
 };
+
+//商品详情
+export const getProductsDetail = (id) => request.get("/cms/products/" + id);
+
+// 加入购物车
+export const addShopCart = (data) =>
+  request.post("/cms/shop/carts/add", qs.stringify(data));

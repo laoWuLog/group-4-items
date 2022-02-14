@@ -13,7 +13,7 @@ instance.interceptors.request.use(
       // 但凡使用了request发送请求,根据token,都会为headers携带token  ---全局
       config.headers["x-auth-token"] = token;
     }
-    console.log(config);
+    // console.log(config);
     return config;
   },
   (err) => {

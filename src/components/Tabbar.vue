@@ -18,7 +18,7 @@
             :src="
               userInfo ? userInfo.headImg : '../assets/img/userImg.f8bbec5e.png'
             "
-            alt="个人信息"
+            alt=""
             @click="getUserInfo"
           />
           <span>用户名:{{ userInfo ? userInfo.nickName : "--" }}</span>
@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     userInfo() {
-      console.log(this.$store.state.userInfo);
+      // console.log(this.$store.state.userInfo);
       return this.$store.state.userInfo?.userInfo;
     },
     cartTotal() {
@@ -71,6 +71,7 @@ export default {
 <style lang='less' scoped>
 .tabbar_wrapper {
   // width: 100%;
+  // position: fixed;
   background-color: #242b39;
   .tabbar_container {
     width: 1200px;

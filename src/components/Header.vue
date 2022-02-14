@@ -10,7 +10,12 @@
       <ul class="header_nav">
         <li :class="$route.path == '' ? 'active' : ''" class="index">首页</li>
         <li :class="$route.path == '' ? 'active' : ''">全部商品</li>
-        <li :class="$route.path == '' ? 'active' : ''">个人中心</li>
+        <li
+          :class="$route.path == '' ? 'active' : ''"
+          @click="$router.push('/userInfo')"
+        >
+          个人中心
+        </li>
         <li :class="$route.path == '' ? 'active' : ''">我的订单</li>
         <li :class="$route.path == '' ? 'active' : ''">专属福利</li>
       </ul>
@@ -33,6 +38,7 @@ export default {};
   .header_container {
     width: 1200px;
     margin: 0 auto;
+    // margin-top: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -53,6 +53,7 @@ export default {
 </script>
 
 <style lang="less" >
+@import url("./assets/style/iconfont.less");
 #nav {
   padding: 30px;
 }
